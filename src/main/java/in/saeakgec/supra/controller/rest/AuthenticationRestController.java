@@ -5,7 +5,9 @@ import in.saeakgec.supra.Util.AuthenticationException;
 import in.saeakgec.supra.Util.JwtAuthenticationRequest;
 import in.saeakgec.supra.Util.JwtTokenUtil;
 import in.saeakgec.supra.model.JwtUser;
+import in.saeakgec.supra.model.User;
 import in.saeakgec.supra.service.JwtAuthenticationResponse;
+import in.saeakgec.supra.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin
 public class AuthenticationRestController {
 
     @Value("${jwt.header}")
@@ -39,7 +42,10 @@ public class AuthenticationRestController {
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
-    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = "/auth/signin", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -50,6 +56,14 @@ public class AuthenticationRestController {
 
         // Return the token
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+    }
+
+    @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
+    public User createNewUser(@RequestBody User user){
+
+        User saved = userService.saveUser(user);
+
+        return saved;
     }
 
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
