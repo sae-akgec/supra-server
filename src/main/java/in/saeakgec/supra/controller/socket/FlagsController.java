@@ -1,6 +1,7 @@
 package in.saeakgec.supra.controller.socket;
 
 import in.saeakgec.supra.model.GFlags;
+import in.saeakgec.supra.model.GeneralFlags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -21,9 +22,9 @@ public class FlagsController  {
 
     @MessageMapping("/flags")
     @SendTo("/server/flags")
-    public GFlags greeting(GFlags message) throws Exception {
+    public GeneralFlags sendFlags(GeneralFlags message) throws Exception {
         Thread.sleep(1000); // simulated delay
-        System.out.println("Hello, " + message.getRedFlag() + "!");
-        return new GFlags("Hello");
+        System.out.println(message.toString());
+        return message;
     }
 }

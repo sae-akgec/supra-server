@@ -9,6 +9,7 @@ import in.saeakgec.supra.service.RaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
@@ -50,4 +51,20 @@ public class RaceServiceImpl implements RaceService {
         return raceRepository.save(race);
     }
 
+    @Override
+    @Transactional
+    public Race updateStatusByAdmin(int race) {
+        raceRepository.updateStatus((long) race, "online");
+        return getRace(race);
+    }
+
+    @Override
+    public List<Race> allRacesOnline() {
+        return (List<Race>) raceRepository.findAllByStatus("online");
+    }
+
+    @Override
+    public Race getRace(int id) {
+        return raceRepository.getOne((long) id);
+    }
 }

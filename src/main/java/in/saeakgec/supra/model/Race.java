@@ -18,6 +18,9 @@ public class Race {
     private String name;
     private Date time;
     private String status;
+    private String addressTo;
+    private String addressFrom;
+
 
     @ManyToOne
     @JsonIgnore
@@ -66,5 +69,19 @@ public class Race {
         this.user = user;
     }
 
+    public String getAddressTo() {
+        return addressTo;
+    }
 
+    public void setAddressTo(String addressTo) {
+        this.addressTo = addressTo;
+    }
+
+    public String getAddressFrom() {
+        return addressFrom;
+    }
+
+    public void setAddressFrom(String addressFrom) {
+        this.addressFrom = addressFrom;
+    }
 }

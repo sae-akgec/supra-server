@@ -4,10 +4,7 @@ import in.saeakgec.supra.model.Race;
 import in.saeakgec.supra.service.RaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,20 @@ public class RaceRestController {
         return raceService.saveRaceByAdmin(race);
     }
 
+    @RequestMapping(value = "/admin/update/{id}", method = RequestMethod.GET)
+    public boolean putRaceByAdmin(@PathVariable int id){
+       raceService.updateStatusByAdmin(id);
+       return true;
+    }
+
+    @RequestMapping(value = "/admin/{id}", method = RequestMethod.GET)
+    public Race getRace(@PathVariable int id){
+        return raceService.getRace(id);
+    }
+
+    @RequestMapping(value = "/admin/online", method = RequestMethod.GET)
+    public List<Race> racesOnline(){
+        return raceService.findRaceByAdminId();
+    }
 
 }
